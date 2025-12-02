@@ -1,0 +1,1026 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tripark — Encuentra el parque perfecto cerca de ti</title>
+  <meta name="description" content="Tripark es la app que te muestra los mejores parques cerca de ti según limpieza, mantenimiento, áreas infantiles y zonas para perros.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #f5faf7;
+      --bg-alt: #e3f2ea;
+      --ink: #102218;
+      --muted: #64736c;
+      --accent: #2f8c5f;
+      --accent-soft: #d0f2df;
+      --cta: #2f8c5f;
+      --cta-hover: #256e4a;
+      --danger: #c0392b;
+      --card-bg: #ffffff;
+      --border-subtle: rgba(16, 34, 24, 0.08);
+      --shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.08);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+      --transition-fast: 160ms ease-out;
+      --max-width: 1100px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background-image:
+        radial-gradient(
+          circle at top left,
+          rgba(12, 37, 32, 0.2),
+          rgba(12, 37, 32, 0.36) 40%,
+          rgba(12, 37, 32, 0.28)
+        ),
+        url('parco.jpg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 16px 20px 40px;
+    }
+
+    /* NAVBAR */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 8px 18px;
+      margin-top: 4px;
+      border-radius: 999px;
+      background: rgba(4, 22, 16, 0.75);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-pill {
+      width: 34px;
+      height: 34px;
+      border-radius: 14px;
+      background: conic-gradient(from 160deg, #2f8c5f, #61b889, #a9f0c2, #2f8c5f);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 25px rgba(47, 140, 95, 0.35);
+    }
+
+    .logo-pill span {
+      font-size: 18px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .brand-name {
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      font-size: 18px;
+      color: #f7fbf8;
+    }
+
+    .brand-tagline {
+      font-size: 12px;
+      color: #e0eee8;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      font-size: 14px;
+      color: #e0eee8;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding-bottom: 2px;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background: var(--accent);
+      border-radius: 999px;
+      transition: width var(--transition-fast);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      border: 1px solid transparent;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--transition-fast), color var(--transition-fast),
+                  box-shadow var(--transition-fast), transform var(--transition-fast), border-color var(--transition-fast);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: var(--cta);
+      color: white;
+      box-shadow: 0 14px 35px rgba(47, 140, 95, 0.45);
+    }
+
+    .btn-primary:hover {
+      background: var(--cta-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(47, 140, 95, 0.55);
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.6);
+      border-color: rgba(47, 140, 95, 0.35);
+      color: var(--ink);
+    }
+
+    .btn-ghost:hover {
+      background: white;
+      border-color: var(--cta);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    }
+
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+      gap: 32px;
+      margin-top: 24px;
+      align-items: center;
+    }
+
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px 4px 4px;
+      border-radius: var(--radius-pill);
+      background: rgba(208, 242, 223, 0.7);
+      color: #1b5b3a;
+      font-size: 12px;
+      font-weight: 600;
+      width: fit-content;
+    }
+
+    .eyebrow-badge {
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    h1.hero-title {
+      font-size: clamp(30px, 4vw, 40px);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: #f7fbf8;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+    }
+
+    .hero-highlight {
+      background: linear-gradient(120deg, #2f8c5f, #1ca58c);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e0eee8;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+      max-width: 34rem;
+    }
+
+    .hero-subtitle strong {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: #e0eee8;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    /* HERO CARD (MAP MOCK) */
+    .hero-visual {
+      position: relative;
+    }
+
+    .hero-card {
+      position: relative;
+      border-radius: var(--radius-xl);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(227, 242, 234, 0.9));
+      box-shadow: var(--shadow-soft);
+      padding: 14px 14px 16px;
+      overflow: hidden;
+    }
+
+    .hero-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .hero-card-title {
+      font-weight: 600;
+      color: var(--ink);
+      font-size: 13px;
+    }
+
+    .hero-card-controls {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .pill-filter {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      background: rgba(47, 140, 95, 0.08);
+      font-size: 11px;
+      color: var(--ink);
+    }
+
+    .pill-filter span {
+      font-size: 14px;
+    }
+
+    .map-mock {
+      border-radius: 18px;
+      overflow: hidden;
+      background: radial-gradient(circle at top, #d1e9ff 0, #b1e2c6 32%, #8bd5a2 60%, #5ca77b 100%);
+      height: 210px;
+      position: relative;
+    }
+
+    .map-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,0.35) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.35) 1px, transparent 1px);
+      background-size: 30px 30px;
+      opacity: 0.7;
+      mix-blend-mode: screen;
+    }
+
+    .park-tag {
+      position: absolute;
+      padding: 5px 10px;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.16);
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .park-tag .score {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 11px;
+      color: #1b5b3a;
+    }
+
+    .park-tag .label {
+      font-weight: 500;
+    }
+
+    .park-tag .chip {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #f5faf7;
+      color: var(--muted);
+    }
+
+    .park-1 { top: 22%; left: 16%; }
+    .park-2 { top: 48%; right: 14%; }
+    .park-3 { bottom: 16%; left: 30%; }
+
+    .hero-card-footer {
+      margin-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .hero-card-footer span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #2ecc71;
+      box-shadow: 0 0 0 4px rgba(46, 204, 113, 0.25);
+    }
+
+    /* SECTION: GENERALE */
+    .section {
+      margin-top: 56px;
+    }
+
+    .section-header {
+      margin-bottom: 18px;
+    }
+
+    .section-eyebrow {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #e0eee8;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+      margin-bottom: 4px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+      color: #f7fbf8;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+    }
+
+    .section-subtitle {
+      font-size: 14px;
+      color: #e0eee8;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+      max-width: 40rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      color: #f4f9f7;
+      padding: 16px 16px 18px;
+    }
+
+    .card-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #e5f4ef;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .card-body {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #f4f9f7;
+    }
+
+    .card-tagline {
+      margin-top: 4px;
+      font-size: 11px;
+      color: #b9f2d3;
+      font-weight: 600;
+    }
+
+    /* SECTION: PER CHI */
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(47, 140, 95, 0.26);
+      background: rgba(255, 255, 255, 0.9);
+      color: var(--ink);
+    }
+
+    /* SECTION: OFFERTA / CTA */
+    .offer {
+      margin-top: 50px;
+      border-radius: var(--radius-xl);
+      padding: 18px 18px 18px;
+      background: linear-gradient(130deg, #2f8c5f, #1ca58c);
+      color: white;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 18px;
+      align-items: center;
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.18);
+    }
+
+    .offer-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .offer-text {
+      font-size: 14px;
+      opacity: 0.94;
+      max-width: 32rem;
+    }
+
+    .offer-text strong {
+      font-weight: 700;
+    }
+
+    .offer-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .offer-badge {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: var(--radius-pill);
+      background: rgba(0, 0, 0, 0.22);
+    }
+
+    .offer-cta {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    /* Bottone nell'offerta: stesso verde del riquadro */
+    .offer-cta .btn-primary {
+      background: #125a3a;
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.35);
+    }
+
+    .offer-cta .btn-primary:hover {
+      background: #0c432b;
+      transform: translateY(-1px);
+    }
+
+    .offer-note {
+      font-size: 11px;
+      opacity: 0.9;
+    }
+
+    /* SECTION: FAQ */
+    .faq-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .faq-item {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      color: #f4f9f7;
+      padding: 12px 13px;
+    }
+
+    .faq-q {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      color: #ffffff;
+    }
+
+    .faq-a {
+      font-size: 12px;
+      color: #f4f9f7;
+      line-height: 1.5;
+    }
+
+    /* FOOTER */
+    .footer {
+      margin-top: 42px;
+      padding: 18px 0 6px;
+      font-size: 11px;
+      color: #e0eee8;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      border-top: 1px solid rgba(0, 0, 0, 0.2);
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer a {
+      color: #f7fbf8;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    /* ANIMAZIONI */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-up {
+      opacity: 0;
+      animation: fadeUp 600ms ease-out forwards;
+    }
+
+    .fade-delay-1 { animation-delay: 0.08s; }
+    .fade-delay-2 { animation-delay: 0.18s; }
+    .fade-delay-3 { animation-delay: 0.28s; }
+    .fade-delay-4 { animation-delay: 0.38s; }
+
+    /* RESPONSIVE */
+    @media (max-width: 840px) {
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+        border-radius: 24px;
+      }
+
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-visual {
+        order: -1;
+      }
+
+      .offer {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .faq-list {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .shell {
+        padding-inline: 14px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .grid-3 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .offer {
+        padding: 16px 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <main class="shell">
+      <!-- NAVBAR -->
+      <header class="nav fade-up fade-delay-1">
+        <div class="nav-left">
+          <div class="logo-pill">
+            <span>🌳</span>
+          </div>
+          <div>
+            <div class="brand-name">Tripark</div>
+            <div class="brand-tagline">El TripAdvisor de los parques</div>
+          </div>
+        </div>
+        <nav class="nav-links">
+          <a href="#como-funciona">Cómo funciona</a>
+          <a href="#para-quien">Para quién es</a>
+          <a href="#faq">Preguntas frecuentes</a>
+        </nav>
+        <div class="nav-cta">
+          <a href="#oferta" class="btn btn-ghost">Ver oferta</a>
+          <a href="#cta-main" class="btn btn-primary">Probar Tripark</a>
+        </div>
+      </header>
+
+      <!-- HERO -->
+      <section class="hero" id="cta-main">
+        <div class="hero-copy fade-up fade-delay-2">
+          <div class="eyebrow">
+            <div class="eyebrow-badge">🗺️</div>
+            Tripark llega en primicia a ciudades piloto
+          </div>
+          <h1 class="hero-title">
+            Encuentra en <span class="hero-highlight">30 segundos</span> el parque ideal, sin perder tiempo.
+          </h1>
+          <p class="hero-subtitle">
+            Tripark te muestra <strong>sólo los parques realmente bien cuidados</strong> cerca de ti, con puntuaciones de limpieza, seguridad, áreas infantiles, zonas para perros y rutas para correr o caminar.
+          </p>
+          <div class="hero-actions">
+            <a href="#oferta" class="btn btn-primary">
+              Quiero acceso anticipado
+            </a>
+            <a href="#como-funciona" class="btn btn-ghost">
+              Ver cómo funciona
+            </a>
+          </div>
+          <div class="hero-meta">
+            <span><span class="dot"></span> Ideal para familias, runners y dueños de mascotas</span>
+            <span>⭐ Valoraciones de 0 a 5</span>
+            <span>📍 Basado en tu ubicación</span>
+          </div>
+        </div>
+
+        <div class="hero-visual fade-up fade-delay-3">
+          <div class="hero-card">
+            <div class="hero-card-header">
+              <div>
+                <div class="hero-card-title">Parques cerca de ti</div>
+                <div>Madrid · radio 2 km</div>
+              </div>
+              <div class="hero-card-controls">
+                <div class="pill-filter">
+                  <span>⚽</span> Niños &amp; juegos
+                </div>
+                <div class="pill-filter">
+                  <span>🐕</span> Zona perros
+                </div>
+              </div>
+            </div>
+
+            <div class="map-mock">
+              <div class="map-grid"></div>
+
+              <div class="park-tag park-1">
+                <div class="score">4.7</div>
+                <div>
+                  <div class="label">Parque Villa Verde</div>
+                  <div class="chip">Limpieza · Juegos niños</div>
+                </div>
+              </div>
+
+              <div class="park-tag park-2">
+                <div class="score">4.3</div>
+                <div>
+                  <div class="label">Área canina Norte</div>
+                  <div class="chip">Tranquilo por la tarde</div>
+                </div>
+              </div>
+
+              <div class="park-tag park-3">
+                <div class="score">3.9</div>
+                <div>
+                  <div class="label">Ruta running Río</div>
+                  <div class="chip">Distancia · Iluminación</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-card-footer">
+              <span>
+                <span class="status-dot"></span>
+                Datos actualizados sobre el estado de los parques
+              </span>
+              <span>Tripark · BETA</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN: CÓMO FUNCIONA -->
+      <section class="section fade-up fade-delay-1" id="como-funciona">
+        <div class="section-header">
+          <div class="section-eyebrow">CÓMO FUNCIONA</div>
+          <h2 class="section-title">3 pasos para dejar de probar parques “a ciegas”</h2>
+          <p class="section-subtitle">
+            Tripark analiza datos y opiniones reales sobre el estado de los parques y los convierte en un mapa claro,
+            con puntuaciones de 0 a 5 según los criterios que más importan.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card fade-up fade-delay-2">
+            <div class="card-label">PASO 1</div>
+            <h3 class="card-title">Indica dónde estás y qué necesitas</h3>
+            <p class="card-body">
+              Abre Tripark, activa la ubicación o escribe tu zona y selecciona lo que buscas:
+              área infantil, zona canina, rutas para correr, sombra, bancos, etc.
+            </p>
+            <div class="card-tagline">Nada de “vamos y ya veremos”.</div>
+          </article>
+
+          <article class="card fade-up fade-delay-3">
+            <div class="card-label">PASO 2</div>
+            <h3 class="card-title">Compara puntuaciones y estado real</h3>
+            <p class="card-body">
+              Cada parque tiene una nota de <strong>0 a 5</strong> en limpieza, mantenimiento, seguridad, servicios
+              y afluencia. Sabes al instante qué parques merecen la pena.
+            </p>
+            <div class="card-tagline">Poca información, pero la que importa.</div>
+          </article>
+
+          <article class="card fade-up fade-delay-4">
+            <div class="card-label">PASO 3</div>
+            <h3 class="card-title">Ve a lo seguro y deja tu valoración</h3>
+            <p class="card-body">
+              Elige el parque ideal, abre la ruta en Maps y después deja tu valoración
+              para ayudar a otras familias, deportistas y dueños de mascotas.
+            </p>
+            <div class="card-tagline">La comunidad mejora los parques, voto a voto.</div>
+          </article>
+        </div>
+      </section>
+
+      <!-- SECCIÓN: PARA QUIÉN ES -->
+      <section class="section fade-up fade-delay-1" id="para-quien">
+        <div class="section-header">
+          <div class="section-eyebrow">PARA QUIÉN ES</div>
+          <h2 class="section-title">No es “otro mapa más”. Es para quien vive los parques de verdad.</h2>
+          <p class="section-subtitle">
+            Tripark está pensado para personas que quieren aprovechar al máximo su tiempo libre,
+            evitando parques sucios, descuidados o sin servicios.
+          </p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card fade-up fade-delay-2">
+            <h3 class="card-title">Familias con niños</h3>
+            <p class="card-body">
+              Encuentra parques con juegos en buen estado, baños cercanos, sombra y bancos.
+              Más tiempo jugando, menos tiempo quejándose de que “aquí no hay nada”.
+            </p>
+            <div class="pill-row">
+              <span class="pill">Juegos seguros</span>
+              <span class="pill">Baños cerca</span>
+              <span class="pill">Zona merienda</span>
+            </div>
+          </article>
+
+          <article class="card fade-up fade-delay-3">
+            <h3 class="card-title">Dueños de perros</h3>
+            <p class="card-body">
+              Descubre áreas caninas limpias, valladas y con buen ambiente.
+              Evita zonas donde la situación está descontrolada o los recintos están cerrados.
+            </p>
+            <div class="pill-row">
+              <span class="pill">Vallado</span>
+              <span class="pill">Limpieza</span>
+              <span class="pill">Afluencia</span>
+            </div>
+          </article>
+
+          <article class="card fade-up fade-delay-4">
+            <h3 class="card-title">Runners, caminantes y turistas</h3>
+            <p class="card-body">
+              Rutas llanas o con desnivel, iluminación por la noche, zonas tranquilas.
+              Perfecto para hacer ejercicio o descubrir la ciudad empezando por sus zonas verdes.
+            </p>
+            <div class="pill-row">
+              <span class="pill">Distancia</span>
+              <span class="pill">Iluminación</span>
+              <span class="pill">Tranquilidad</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- SECCIÓN: OFERTA -->
+      <section class="offer fade-up fade-delay-2" id="oferta">
+        <div>
+          <div class="offer-title">Acceso anticipado a Tripark en ciudades piloto</div>
+          <p class="offer-text">
+            Estamos lanzando Tripark en una serie de <strong>ciudades piloto</strong>.
+            Si te apuntas ahora, entras en la lista prioritaria: recibirás acceso anticipado,
+            podrás proponer nuevos parques y tendrás un canal directo para darnos feedback
+            sobre puntuaciones y criterios.
+          </p>
+          <div class="offer-badges">
+            <span class="offer-badge">Plazas limitadas por ciudad</span>
+            <span class="offer-badge">Ideal para familias, deportistas y dog-lovers</span>
+            <span class="offer-badge">Actualizaciones por email (sin spam)</span>
+          </div>
+        </div>
+        <div class="offer-cta">
+          <!-- Cambia este enlace con tu formulario real -->
+          <a href="https://tu-enlace-form-tripark.com" class="btn btn-primary">
+            Unirme a la lista de espera
+          </a>
+          <div class="offer-note">
+            Deja tu email y te avisaremos cuando Tripark esté disponible en tu zona,
+            junto con un resumen de los parques mejor valorados.
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN: FAQ -->
+      <section class="section fade-up fade-delay-2" id="faq">
+        <div class="section-header">
+          <div class="section-eyebrow">PREGUNTAS FRECUENTES</div>
+          <h2 class="section-title">Dudas que nos preguntan a menudo</h2>
+          <p class="section-subtitle">
+            Si tienes dudas sobre cómo funciona la app o la recogida de datos,
+            aquí tienes las respuestas más habituales.
+          </p>
+        </div>
+
+        <div class="faq-list">
+          <article class="faq-item fade-up fade-delay-2">
+            <div class="faq-q">¿Está Tripark disponible en mi ciudad?</div>
+            <div class="faq-a">
+              Vamos activando ciudades poco a poco. Si te apuntas a la lista de espera,
+              te avisaremos cuando tu zona esté disponible y, si quieres, podrás ayudarnos
+              a mapear los parques más importantes.
+            </div>
+          </article>
+
+          <article class="faq-item fade-up fade-delay-3">
+            <div class="faq-q">¿Cómo se calculan las puntuaciones?</div>
+            <div class="faq-a">
+              Cada parque tiene una nota media de 0 a 5 basada en valoraciones de usuarios
+              y revisiones periódicas del estado de las zonas verdes: limpieza, mantenimiento,
+              seguridad, servicios y afluencia.
+            </div>
+          </article>
+
+          <article class="faq-item fade-up fade-delay-4">
+            <div class="faq-q">¿Tripark es gratuito?</div>
+            <div class="faq-a">
+              Durante la fase de lanzamiento en ciudades piloto, Tripark es gratuito para usuarios particulares.
+              Más adelante podría haber funciones premium para ayuntamientos, asociaciones y operadores turísticos.
+            </div>
+          </article>
+
+          <article class="faq-item fade-up fade-delay-4">
+            <div class="faq-q">¿Puedo reportar un parque en mal estado?</div>
+            <div class="faq-a">
+              Sí. Puedes actualizar la puntuación o enviar una incidencia: esto nos ayuda a mantener el mapa fiable
+              y permite a administraciones y asociaciones identificar dónde hace falta intervenir.
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="footer fade-up fade-delay-3">
+        <div>© <span id="year"></span> Tripark — Proyecto en fase beta.</div>
+        <div class="footer-links">
+          <a href="#">Privacidad</a>
+          <a href="#">Términos de uso</a>
+          <a href="#">Contacto</a>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
