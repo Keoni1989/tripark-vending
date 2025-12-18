@@ -6,7 +6,7 @@ Demo: https://... (link Vercel)
 landing page for the Tripark project.
 
 ## Tech
-HTML, CSS, (JS if used)
+HTML, CSS, JS
 
 ## Run locally
 Open `vendingpage.html` in the browser
